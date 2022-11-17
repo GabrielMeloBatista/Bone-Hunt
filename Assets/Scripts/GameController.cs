@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    protected int i, j;
+    protected int controlCount,boneCount, i, j;
+    protected Vector3 hide;
+    protected Vector3 show;
     [SerializeField] BonePicker bone;
     [SerializeField] bool canNext;
     [SerializeField] Button button;
@@ -19,28 +21,33 @@ public class GameController : MonoBehaviour
         canNext = true;
         button.onClick.AddListener(clickHandler);
         buttonObject.SetActive(false);
+        hide = new Vector3(0, 0, -1);
+        show = new Vector3(0, 0, 1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (i < bone.bones.Count && canNext)
+        controlCount = gameControllers.Count;
+        boneCount = bone.bones.Count;
+
+        if (i < boneCount && canNext)
         {
             pauseGame();
             buttonObject.SetActive(true);
             if (i > 0)
             {
-                bone.bones[i - 1].transform.position = new Vector3(0, 0, -1);
+                bone.bones[i - 1].transform.position = hide;
             }
-            bone.bones[i].transform.position = new Vector3(0, 0, 1);
+            bone.bones[i].transform.position = show;
             canNext = false;
             i++;
         }
-        else if (i == bone.bones.Count && canNext && bone.bones.Count != 0)
+        else if (i == boneCount && canNext && boneCount != 0)
         {
             pauseGame();
             buttonObject.SetActive(true);
-            bone.bones[i - 1].transform.position = new Vector3(0, 0, -1);
+            bone.bones[i - 1].transform.position = hide;
             canNext = false;
             i++;
         }
@@ -56,7 +63,7 @@ public class GameController : MonoBehaviour
     private void pauseGame()
     {
         Time.timeScale = 0;
-        while (gameControllers.Count> j) {
+        while (controlCount > j) {
             gameControllers[j].SetActive(false);
             j++;
         }
@@ -66,7 +73,7 @@ public class GameController : MonoBehaviour
     private void ResumeGame()
     {
         Time.timeScale = 1;
-        while (gameControllers.Count > j)
+        while (controlCount > j)
         {
             gameControllers[j].SetActive(true);
             j++;
