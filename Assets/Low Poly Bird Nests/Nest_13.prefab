@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1095753282909160121}
   - component: {fileID: 5291441934618490312}
-  - component: {fileID: 5865917385898542970}
   m_Layer: 0
   m_Name: Nest_13
   m_TagString: Untagged
@@ -63,20 +62,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 6344823866268918563}
   m_Enabled: 1
---- !u!64 &5865917385898542970
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 324036396437510147}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1480694389015075251, guid: aa5311776d250564ca996367cebb1040, type: 3}
 --- !u!1 &1593092381359516061
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,7 +29,6 @@ public class NPCDestiny : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
         if (other.CompareTag("NPC"))
         {
             switch (pivotPoint)
