@@ -5,19 +5,24 @@ using UnityEngine;
 public class NPCDestiny : MonoBehaviour
 {
     [SerializeField] int pivotPoint;
-    private Vector3 positionA, positionB, positionC, positionD;
+    [SerializeField] List<Vector3> position;
 
     private void Start()
     {
-        positionA = new Vector3(-33f, 17f, 17f);
-        positionB = new Vector3(-20f, 17f, 17f);
-        positionC = new Vector3(-19f, 34f, 62f);
-        positionD = new Vector3(-25f, 24f, 29f);
+        // Gambiarra, muda salva o ponte de destino do personagem
+        position = new List<Vector3>
+        {
+            new Vector3(-33f, 17f, 17f),
+            new Vector3(-20f, 17f, 17f),
+            new Vector3(-19f, 34f, 62f),
+            new Vector3(-25f, 24f, 29f)
+        };
     }
-
+    
+    // Metodo que garante que a posição esteja dentro do numero possivel.
     private void nextPosition()
     {
-        if (pivotPoint == 3)
+        if (pivotPoint == position.Count-1)
         {
             pivotPoint = 0;
         }
@@ -29,28 +34,11 @@ public class NPCDestiny : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Caso um npc tenha chegado ao destino, move o destino para o proxima posição
         if (other.CompareTag("NPC"))
-        {
-            switch (pivotPoint)
-            {
-                case 0:
-                    this.gameObject.transform.position = positionA;
-                    nextPosition();
-                    break;
-                case 1:
-                    this.gameObject.transform.position = positionB;
-                    nextPosition();
-                    break;
-                case 2:
-                    this.gameObject.transform.position = positionC;
-                    nextPosition();
-                    break;
-                case 3: 
-                    this.gameObject.transform.position = positionD;
-                    nextPosition();
-                    break;
-            }
-            
+        {           
+            this.gameObject.transform.position = position[pivotPoint];
+            nextPosition();
         }
     }
 }
