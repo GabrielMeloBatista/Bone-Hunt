@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BoneGame.unity
     guid: dc5281cfde1a1464786578719d213125
+  - enabled: 1
+    path: Assets/Scenes/BoneViewer.unity
+    guid: 1b61abb9424e3e54f879675eec8a5770
   m_configObjects: {}

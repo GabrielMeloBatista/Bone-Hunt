@@ -5,51 +5,68 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    protected int controlCount,boneCount, i, j;
+    [SerializeField] int controlCount,boneCount, i;
     protected Vector3 hide;
     protected Vector3 show;
-    [SerializeField] BonePicker bone;
     // Caso falso, não vai colocar o osso capturado na tela, caso verdadeiro, colocara o proximo da lista.
     [SerializeField] bool canNext;
+    [SerializeField] float damage;
     [SerializeField] Button button;
     [SerializeField] GameObject buttonObject;
+    [SerializeField] List<GameObject> bone;
     [SerializeField] List<GameObject> gameControllers;
 
     private void Start()
     {
+        bone = new List<GameObject>();
         i = 0;
-        j = 0;
         canNext = true;
         button.onClick.AddListener(clickHandler);
         buttonObject.SetActive(false);
         hide = new Vector3(0, 0, -1);
         show = new Vector3(0, 0, 1);
+        damage = 5.0f;
     }
 
     void Update()
     {
         controlCount = gameControllers.Count;
-        boneCount = bone.bones.Count;
+        boneCount = bone.Count;
 
-        if (i <= boneCount && canNext && boneCount != 0)
+        if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
+        {
+            Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+            RaycastHit raycastHit;
+            if (Physics.Raycast(raycast, out raycastHit))
+            {
+                if (raycastHit.collider.CompareTag("Bone"))
+                {
+                    raycastHit.collider.transform.position = new Vector3(0, 0, -1);
+                    bone.Add(raycastHit.collider.gameObject);
+                }
+
+                if (raycastHit.collider.CompareTag("NPC"))
+                {
+                    // raycastHit.collider.gameObject.GetComponent<HeathSystem>().dealDamage(damage);
+                }
+            }
+        }
+
+        if (boneCount != 0 && i < boneCount && canNext)
         {
             pauseGame();
             
+            canNext = false;
             // Coloca o botão de fechar
             buttonObject.SetActive(true);
-            if (i > 0)
-            {
-                // Escode o osso anterior
-                bone.bones[i - 1].transform.position = hide;
-            }
+            
             // Verifica se tem mais osso
             if (i != boneCount)
             {
                 // se tiver ele mostra este osso, e coloca nele a função que permite girar
-                bone.bones[i].transform.position = show;
-                bone.bones[i].AddComponent<UIBoneViewer>();
+                bone[i].transform.position = show;
+                bone[i].AddComponent<UIBoneViewer>();
             }
-            canNext = false;
             i++;
         }
     }
@@ -59,6 +76,11 @@ public class GameController : MonoBehaviour
     {
         canNext= true;
         buttonObject.SetActive(false);
+        if (i > 0)
+        {
+            // Escode o osso anterior
+            bone[i - 1].transform.position = hide;
+        }
         ResumeGame();
     }
 
@@ -67,6 +89,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void pauseGame()
     {
+        int j = 0;
         Time.timeScale = 0;
         while (controlCount > j) {
             gameControllers[j].SetActive(false);
@@ -77,6 +100,7 @@ public class GameController : MonoBehaviour
 
     private void ResumeGame()
     {
+        int j = 0;
         Time.timeScale = 1;
         while (controlCount > j)
         {
