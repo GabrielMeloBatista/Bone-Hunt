@@ -1136,6 +1136,8 @@ GameObject:
   - component: {fileID: 3838155422632546205}
   - component: {fileID: 3838155422632546206}
   - component: {fileID: 3838155422632546207}
+  - component: {fileID: 5487806166551191931}
+  - component: {fileID: 8031496479361526241}
   m_Layer: 0
   m_Name: xbot
   m_TagString: NPC
@@ -1225,7 +1227,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   theDestination: {fileID: 0}
   canAtack: 0
+  willAtack: 0
   thePlayer: {fileID: 0}
+  damage: 10
 --- !u!195 &3838155422632546207
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1248,6 +1252,35 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &5487806166551191931
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144076732146191290}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 1, z: 1}
+--- !u!114 &8031496479361526241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144076732146191290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bfd49521bcf118459958305bc575029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  minHealth: 0
+  health: 0
+  isAlive: 0
 --- !u!1 &4199288454399977697
 GameObject:
   m_ObjectHideFlags: 0

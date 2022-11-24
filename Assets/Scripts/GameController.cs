@@ -10,7 +10,6 @@ public class GameController : MonoBehaviour
     protected Vector3 show;
     // Caso falso, não vai colocar o osso capturado na tela, caso verdadeiro, colocara o proximo da lista.
     [SerializeField] bool canNext;
-    [SerializeField] float damage;
     [SerializeField] Button button;
     [SerializeField] GameObject buttonObject;
     [SerializeField] List<GameObject> bone;
@@ -25,7 +24,6 @@ public class GameController : MonoBehaviour
         buttonObject.SetActive(false);
         hide = new Vector3(0, 0, -1);
         show = new Vector3(0, 0, 1);
-        damage = 5.0f;
     }
 
     void Update()
@@ -43,11 +41,6 @@ public class GameController : MonoBehaviour
                 {
                     raycastHit.collider.transform.position = new Vector3(0, 0, -1);
                     bone.Add(raycastHit.collider.gameObject);
-                }
-
-                if (raycastHit.collider.CompareTag("NPC"))
-                {
-                    // raycastHit.collider.gameObject.GetComponent<HeathSystem>().dealDamage(damage);
                 }
             }
         }
