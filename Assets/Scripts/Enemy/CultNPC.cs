@@ -15,7 +15,7 @@ public class CultNPC : MonoBehaviour
     protected bool isAtacking;
     private bool isWalking;
     private bool isRunning;
-    [SerializeField] GameObject thePlayer;
+    [SerializeField] GameObject[] thePlayer;
     [SerializeField] float damage;
     protected Vector3 destination;
     protected Vector3 playerPosition;
@@ -27,6 +27,7 @@ public class CultNPC : MonoBehaviour
 
     void Start()
     {
+        thePlayer = GameObject.FindGameObjectsWithTag("Player");
         theAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         isWalkingHash = Animator.StringToHash("isWalking");
@@ -49,14 +50,14 @@ public class CultNPC : MonoBehaviour
             isRunning = speed >= 3.0f;
 
             // posição do player
-            playerPosition = thePlayer.transform.position;
+            playerPosition = thePlayer[0].transform.position;
             // posição do enimigo
             cultPositon = this.transform.position;
 
             // Decide se ira caminha aleatoriamente ou ir ao player
             if (willAtack && distance < 20.0f && distance != 0.0f)
             {
-                destination = thePlayer.transform.position;
+                destination = thePlayer[0].transform.position;
             }
             else
             {
@@ -104,7 +105,7 @@ public class CultNPC : MonoBehaviour
             yield return new WaitForSecondsRealtime(time);
             if (canAtack)
             {
-                thePlayer.GetComponent<HeathSystem>().dealDamage(damage);
+                thePlayer[0].GetComponent<HeathSystem>().dealDamage(damage);
             }
             isAtacking = false;
         }
