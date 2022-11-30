@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    protected static GameController instance;
     [SerializeField] int controlCount,boneCount, i;
     protected Vector3 hide;
     protected Vector3 show;
@@ -14,8 +15,14 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject buttonObject;
     [SerializeField] List<GameObject> bone;
     [SerializeField] List<GameObject> gameControllers;
+    [SerializeField] Camera cameraMan;
 
-    private void Start()
+    public static GameController getInstance()
+    {
+        return instance;
+    }
+
+    void Start()
     {
         bone = new List<GameObject>();
         i = 0;
@@ -24,6 +31,16 @@ public class GameController : MonoBehaviour
         buttonObject.SetActive(false);
         hide = new Vector3(0, 0, -1);
         show = new Vector3(0, 0, 1);
+
+        if( instance!= null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
@@ -33,13 +50,13 @@ public class GameController : MonoBehaviour
 
         if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
         {
-            Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+            Ray raycast = cameraMan.ScreenPointToRay(Input.GetTouch(0).position);
             RaycastHit raycastHit;
             if (Physics.Raycast(raycast, out raycastHit))
             {
                 if (raycastHit.collider.CompareTag("Bone"))
                 {
-                    raycastHit.collider.transform.position = new Vector3(0, 0, -1);
+                    raycastHit.collider.transform.position = hide;
                     bone.Add(raycastHit.collider.gameObject);
                 }
             }
