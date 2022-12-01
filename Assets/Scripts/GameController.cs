@@ -1,21 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     protected static GameController instance;
-    [SerializeField] int controlCount,boneCount, i;
+
+    float x, y, z;
+
     protected Vector3 hide;
     protected Vector3 show;
+
+    protected GameObject viewing;
+    [SerializeField] int controlCount, boneCount, i;
     // Caso falso, não vai colocar o osso capturado na tela, caso verdadeiro, colocara o proximo da lista.
     [SerializeField] bool canNext;
+    // Quando se esta visualizando o osso
+    [SerializeField] bool isViewer;
+
     [SerializeField] Button button;
     [SerializeField] GameObject buttonObject;
-    [SerializeField] List<GameObject> bone;
     [SerializeField] List<GameObject> gameControllers;
     [SerializeField] Camera cameraMan;
+    
+    public bool isTemple;
+    
+    public List<GameObject> bone;
 
     public static GameController getInstance()
     {
@@ -24,15 +36,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        bone = new List<GameObject>();
-        i = 0;
-        canNext = true;
-        button.onClick.AddListener(clickHandler);
-        buttonObject.SetActive(false);
-        hide = new Vector3(0, 0, -1);
-        show = new Vector3(0, 0, 1);
-
-        if( instance!= null)
+        if (instance != null)
         {
             Destroy(gameObject);
         }
@@ -41,6 +45,16 @@ public class GameController : MonoBehaviour
             instance = this;
         }
         DontDestroyOnLoad(gameObject);
+
+        bone = new List<GameObject>();
+        i = 0;
+        button.onClick.AddListener(clickHandler);
+        buttonObject.SetActive(false);
+        hide = new Vector3(0, 0, -1);
+        show = new Vector3(0, 0, 1);
+        canNext = true;
+        isViewer = false;
+        cameraMan = Camera.main;
     }
 
     void Update()
@@ -59,17 +73,30 @@ public class GameController : MonoBehaviour
                     raycastHit.collider.transform.position = hide;
                     bone.Add(raycastHit.collider.gameObject);
                 }
+                if (raycastHit.collider.CompareTag("Viewer") && !isViewer)
+                {
+                    viewing = raycastHit.collider.gameObject;
+                    x = viewing.transform.position.x;
+                    y = viewing.transform.position.y;
+                    z = viewing.transform.position.z;
+                    viewing.transform.position = show;
+                    isViewer = true;
+                    pauseGame();
+                    buttonObject.SetActive(true);
+                }
             }
         }
 
-        if (boneCount != 0 && i < boneCount && canNext)
+        isTemple = SceneManager.GetActiveScene().name.Equals("InsideTempla");
+
+        if (boneCount != 0 && i < boneCount && canNext && isTemple)
         {
             pauseGame();
-            
+
             canNext = false;
             // Coloca o botão de fechar
             buttonObject.SetActive(true);
-            
+
             // Verifica se tem mais osso
             if (i != boneCount)
             {
@@ -84,13 +111,21 @@ public class GameController : MonoBehaviour
     // Quando o jogador fechar o visualizador do osso
     public void clickHandler()
     {
-        canNext= true;
-        buttonObject.SetActive(false);
-        if (i > 0)
+        if (isViewer)
         {
-            // Escode o osso anterior
-            bone[i - 1].transform.position = hide;
+            viewing.transform.position = new Vector3(x, y, z);
+            isViewer = false;
         }
+        else
+        {
+            canNext = true;
+            if (i > 0)
+            {
+                // Escode o osso anterior
+                bone[i - 1].transform.position = hide;
+            }
+        }
+        buttonObject.SetActive(false);
         ResumeGame();
     }
 
@@ -101,7 +136,8 @@ public class GameController : MonoBehaviour
     {
         int j = 0;
         Time.timeScale = 0;
-        while (controlCount > j) {
+        while (controlCount > j)
+        {
             gameControllers[j].SetActive(false);
             j++;
         }
