@@ -17,7 +17,7 @@ public class ShowCollectable : MonoBehaviour
         }
         foreach (GameObject m in viewBone)
         {
-            if (!collectable.m_Collectables.Contains(m.name))
+            if (!collectable.getCollected().Contains(m.name))
                 m.SetActive(false);
         }
     }

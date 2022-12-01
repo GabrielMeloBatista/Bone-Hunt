@@ -7,9 +7,11 @@ public class Collectable : MonoBehaviour
     protected static Collectable instance;
     public static Collectable getInstance() { return instance; }
 
-    public List<string> m_Collectables = new List<string>();
+    [SerializeField] List<string> m_Collectables = new List<string>();
 
     [SerializeField] GameController gameController = GameController.getInstance();
+
+    public List<string> getCollected() { return m_Collectables; }
 
     void Start()
     {
@@ -26,7 +28,7 @@ public class Collectable : MonoBehaviour
 
     void Update()
     {
-        foreach (GameObject m in gameController.bone)
+        foreach (GameObject m in gameController.getBone())
         {
             if (!m_Collectables.Contains(m.name))
                 m_Collectables.Add(m.name);

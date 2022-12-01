@@ -10,8 +10,8 @@ public class UIBoneViewer: MonoBehaviour
 {
     Vector3 firtPoint;
     Vector3 secondPoint;
-    float xAngle, yAngle, xAngleB, yAngleB, xAngleTemp, yAngleTemp, xAngleTempB, yAngleTempB, zoomOutMin, zoomOutMax;
-    public Camera boneCamera;
+    float xAngle, yAngle, xAngleTemp, yAngleTemp, zoomOutMin, zoomOutMax;
+    [SerializeField] Camera boneCamera;
     void Start()
     {
         xAngle= 0;

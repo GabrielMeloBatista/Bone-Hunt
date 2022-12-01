@@ -27,11 +27,16 @@ public class GameController : MonoBehaviour
     
     public bool isTemple;
     
-    public List<GameObject> bone;
+    [SerializeField] List<GameObject> bone;
 
     public static GameController getInstance()
     {
         return instance;
+    }
+
+    public List<GameObject> getBone()
+    {
+        return bone;
     }
 
     void Start()
