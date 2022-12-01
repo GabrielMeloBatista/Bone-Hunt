@@ -16,7 +16,7 @@ public class UIBoneViewer: MonoBehaviour
     {
         xAngle= 0;
         yAngle= 0;
-        this.transform.rotation= Quaternion.Euler(yAngle, xAngle, 0);
+        transform.rotation= Quaternion.Euler(yAngle, xAngle, 0);
         zoomOutMin = 0.06f;
         zoomOutMax = 1;
     }
@@ -55,7 +55,7 @@ public class UIBoneViewer: MonoBehaviour
                 yAngle = yAngleTemp + (secondPoint.y - firtPoint.y) * 90.0f / Screen.height;
                 
                 // Baseado nisto, ele rotaciona o GameObject que tem este script
-                this.transform.rotation = Quaternion.Euler(yAngle, xAngle, 0.0f);
+                transform.rotation = Quaternion.Euler(yAngle, xAngle, 0.0f);
             }
         }
         
