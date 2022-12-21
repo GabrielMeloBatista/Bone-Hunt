@@ -26,11 +26,6 @@ public class PlayerScript : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(playerCamera);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

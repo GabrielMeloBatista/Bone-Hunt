@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AttackSystem : MonoBehaviour
 {
+    private PlayerInput inputAction;
+    private InputActionMap inputMap;
+    private InputAction attackInput;
+
     [SerializeField] float damage;
     [SerializeField] HeathSystem heathSystem;
     [SerializeField] bool canAtack;
@@ -18,13 +23,16 @@ public class AttackSystem : MonoBehaviour
         canAtack = false;
         targets = new List<GameObject>();
         isAtacking = false;
+        inputAction = GetComponent<PlayerInput>();
+        inputMap = inputAction.currentActionMap;
+        attackInput = inputMap["Attack"];
     }
 
 
     void Update()
     {
         // Adicionar clique de ataque
-        if (canAtack && Input.GetButton("Attack"))
+        if (canAtack && attackInput.IsPressed())
         {
             //  animator.SetBool("Atack", atack);
             StartCoroutine(cooldown(1.0f));
