@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UnityThemes/Merchant.uss?fileID=7433441132597879392&amp;guid=7eb1f9287738b6b4ab0d6370ff098928&amp;type=3#Merchant" />
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:VisualElement name="Container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.2); height: 372px; color: rgb(255, 255, 255);">
+            <ui:Label tabindex="-1" text="Shop" display-tooltip-when-elided="true" name="Title" style="font-size: 22px; -unity-text-align: upper-center; -unity-font-style: bold; background-color: rgba(255, 255, 255, 0); -unity-text-outline-width: 1px; text-shadow: 1px 1px 0 rgba(0, 0, 0, 0);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="button" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.27); align-self: auto; justify-content: center; align-items: auto; flex-direction: row; position: relative; bottom: 0; right: auto; left: auto;">
+        <ui:Button text="Buy" display-tooltip-when-elided="true" name="Buy" view-data-key="Buy" style="align-self: center; justify-content: flex-start; align-items: center; transform-origin: center; white-space: nowrap; -unity-text-align: middle-center;" />
+        <ui:Button text="Close" display-tooltip-when-elided="true" name="Close" view-data-key="Close" style="justify-content: flex-start; align-self: center; align-items: center; -unity-text-align: middle-center;" />
+    </ui:VisualElement>
+</ui:UXML>

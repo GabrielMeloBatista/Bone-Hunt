@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ public class GameController : MonoBehaviour
     protected static GameController instance;
 
     float x, y, z;
+    Quaternion viwerRotation;
 
     protected Vector3 hide;
     protected Vector3 show;
@@ -19,14 +21,16 @@ public class GameController : MonoBehaviour
     [SerializeField] bool canNext;
     // Quando se esta visualizando o osso
     [SerializeField] bool isViewer;
+    [SerializeField] bool isShopping = false;
 
     [SerializeField] Button button;
     [SerializeField] GameObject buttonObject;
     [SerializeField] List<GameObject> gameControllers;
     [SerializeField] Camera cameraMan;
-    
+    [SerializeField] Camera boneCamera;
+
     public bool isTemple;
-    
+
     [SerializeField] List<GameObject> bone;
 
     public static GameController getInstance()
@@ -37,6 +41,33 @@ public class GameController : MonoBehaviour
     public List<GameObject> getBone()
     {
         return bone;
+    }
+
+    public GameObject getViewerBone()
+    {
+        if (isViewer)
+        {
+            return viewing;
+        }
+        else
+        {
+            return bone[i];
+        }
+    }
+
+    public bool getIsShopping()
+    {
+        return isShopping;
+    }
+
+    public Camera getCamera()
+    {
+        return boneCamera;
+    }
+
+    public void HandleStore()
+    {
+        isShopping = !isShopping;
     }
 
     void Start()
@@ -84,10 +115,18 @@ public class GameController : MonoBehaviour
                     x = viewing.transform.position.x;
                     y = viewing.transform.position.y;
                     z = viewing.transform.position.z;
+                    viwerRotation = viewing.transform.rotation;
                     viewing.transform.position = show;
+                    viewing.AddComponent<UIBoneViewer>();
                     isViewer = true;
                     pauseGame();
                     buttonObject.SetActive(true);
+                }
+                if (raycastHit.collider.CompareTag("Shop"))
+                {
+                    isShopping = true;
+                    raycastHit.collider.gameObject.GetComponent<Merchant>().HandleStore();
+                    pauseGame();
                 }
             }
         }
@@ -119,6 +158,9 @@ public class GameController : MonoBehaviour
         if (isViewer)
         {
             viewing.transform.position = new Vector3(x, y, z);
+            viewing.transform.rotation = viwerRotation;
+            viewing.GetComponent<UIBoneViewer>().closeViewer();
+
             isViewer = false;
         }
         else
@@ -128,6 +170,15 @@ public class GameController : MonoBehaviour
             {
                 // Escode o osso anterior
                 bone[i - 1].transform.position = hide;
+                try
+                {
+                    bone[i - 1].GetComponent<UIBoneViewer>().closeViewer();
+                }
+                catch
+                {
+                    isViewer = false;
+
+                }
             }
         }
         buttonObject.SetActive(false);
@@ -137,7 +188,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Pausar e resumir o jogo, esta configurado para esconder e mostrar os ossos
     /// </summary>
-    private void pauseGame()
+    public void pauseGame()
     {
         int j = 0;
         Time.timeScale = 0;
@@ -149,7 +200,7 @@ public class GameController : MonoBehaviour
         j = 0;
     }
 
-    private void ResumeGame()
+    public void ResumeGame()
     {
         int j = 0;
         Time.timeScale = 1;
