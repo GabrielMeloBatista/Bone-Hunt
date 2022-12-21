@@ -24,6 +24,13 @@ public class CultNPC : MonoBehaviour
     protected int isRunningHash;
     protected float speed;
     protected float distance;
+    protected bool isOnDestiny= false;
+    [SerializeField] bool isPlayerTarget = false;
+
+    public void isOnDestinyHandler()
+    {
+        isOnDestiny = true;
+    }
 
     void Start()
     {
@@ -34,51 +41,76 @@ public class CultNPC : MonoBehaviour
         isRunningHash = Animator.StringToHash("isRunning");
         distance = 0.0f;
         isAtacking = false;
+        destination = theDestination.transform.position;
+        setNPCDestiny();
     }
 
     void Update()
     {
         if (this.GetComponent<HeathSystem>().alive())
         {
+            // Distancia do NPC com o player
+            distance = Vector3.Distance(cultPositon, playerPosition);
 
-            // Velocidade do objeto
-            speed = theAgent.velocity.sqrMagnitude;
-
-            // Verifica se esta andando
-            isWalking = speed > 0.5f;
-            // Verifica se esta correndo
-            isRunning = speed >= 3.0f;
-
-            // posição do player
-            playerPosition = thePlayer[0].transform.position;
-            // posição do enimigo
-            cultPositon = this.transform.position;
-
-            // Decide se ira caminha aleatoriamente ou ir ao player
+            // Se for atacar e a distancia for de 20, então o player vira o alvo
             if (willAtack && distance < 20.0f && distance != 0.0f)
             {
+                isPlayerTarget = true;
                 destination = thePlayer[0].transform.position;
+                setNPCDestiny();
             }
             else
             {
-                destination = theDestination.transform.position;
+                isPlayerTarget= false;
             }
 
-            // define o destino
-            theAgent.SetDestination(destination);
+            // Caso o player não for o alvo, vai seguir o caminho padrão
+            if(!isPlayerTarget)
+            {
+                destination = theDestination.transform.position;
+                setNPCDestiny();
+            }
 
-
-            distance = Vector3.Distance(cultPositon, playerPosition);
+            // Se chegou no destino, vai para o proximo destino
+            if(isOnDestiny)
+            {
+                isOnDestiny= false;
+                destination = theDestination.transform.position;
+                setNPCDestiny();
+            }
 
             animator.SetBool(isWalkingHash, isWalking);
             animator.SetBool(isRunningHash, isRunning);
 
+            // Se for atacar já conta o cooldown
             if (canAtack)
             {
                 //  animator.SetBool("Atack", atack);
                 StartCoroutine(cooldown(1.0f));
             }
         }
+    }
+
+    protected void setNPCDestiny()
+    {
+        // Velocidade do objeto
+        speed = theAgent.velocity.sqrMagnitude;
+
+        // Verifica se esta andando
+        isWalking = speed > 0.5f;
+        // Verifica se esta correndo
+        isRunning = speed >= 3.0f;
+
+        // posição do player
+        playerPosition = thePlayer[0].transform.position;
+        // posição do enimigo
+        cultPositon = this.transform.position;
+
+        // Decide se ira caminha aleatoriamente ou ir ao player
+
+
+        // define o destino
+        theAgent.SetDestination(destination);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -99,14 +131,18 @@ public class CultNPC : MonoBehaviour
 
     private IEnumerator cooldown(float time)
     {
+        // Se não estiver atacando ele ataca
         if (!isAtacking)
         {
+            // Esta parte e para evitar spannar ataque
             isAtacking = true;
+            // ataca
+            thePlayer[0].GetComponent<HeathSystem>().dealDamage(damage);
+            
+            // Este e o cooldown
             yield return new WaitForSecondsRealtime(time);
-            if (canAtack)
-            {
-                thePlayer[0].GetComponent<HeathSystem>().dealDamage(damage);
-            }
+
+            //Apos o cooldown terminar ele avisa que pode atacar novamente se possivel
             isAtacking = false;
         }
     }
