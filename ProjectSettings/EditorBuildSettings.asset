@@ -15,4 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/InsideTempla.unity
     guid: 2532f0d87556f734cb52c29d9435b53c
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: ae61c90220727eb44868d3cef473f929, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 766a89654a71522428c19b96dacd6249, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 36f970b20d18ad3408244f951f099b71, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 1b879220d36f25b4fbc40b8139d172c6, type: 2}

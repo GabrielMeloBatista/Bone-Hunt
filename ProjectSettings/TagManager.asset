@@ -7,6 +7,8 @@ TagManager:
   - Bone
   - NPC
   - Viewer
+  - Terrain
+  - Shop
   layers:
   - Default
   - TransparentFX
