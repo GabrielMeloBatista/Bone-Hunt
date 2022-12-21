@@ -6,6 +6,7 @@ public class NPCDestiny : MonoBehaviour
 {
     [SerializeField] int pivotPoint;
     [SerializeField] List<Vector3> position;
+    [SerializeField] GameObject[] targets;
 
     private void Start()
     {
@@ -17,6 +18,9 @@ public class NPCDestiny : MonoBehaviour
             new Vector3(-19f, 34f, 62f),
             new Vector3(-25f, 24f, 29f)
         };
+
+        // Buscar os NPCs
+        targets = GameObject.FindGameObjectsWithTag("NPC");
     }
     
     // Metodo que garante que a posição esteja dentro do numero possivel.
@@ -38,6 +42,10 @@ public class NPCDestiny : MonoBehaviour
         if (other.CompareTag("NPC"))
         {           
             this.gameObject.transform.position = position[pivotPoint];
+            for (int i = 0; i < targets.Length; i++)
+            {
+                targets[i].GetComponent<CultNPC>().isOnDestinyHandler();
+            }
             nextPosition();
         }
     }
