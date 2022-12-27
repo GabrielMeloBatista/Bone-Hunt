@@ -2,7 +2,7 @@ using System.Collections;
 using System.Threading;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectale : MonoBehaviour
 {
     public float speed = 10f;
 

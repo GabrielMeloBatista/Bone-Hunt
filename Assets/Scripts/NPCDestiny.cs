@@ -13,10 +13,10 @@ public class NPCDestiny : MonoBehaviour
         // Gambiarra, muda salva o ponte de destino do personagem
         position = new List<Vector3>
         {
-            new Vector3(-33f, 17f, 17f),
-            new Vector3(-20f, 17f, 17f),
-            new Vector3(-19f, 34f, 62f),
-            new Vector3(-25f, 24f, 29f)
+            new Vector3(-33f, 3.6f, 17f),
+            new Vector3(-20f, 3.6f, 17f),
+            new Vector3(-19f, 3.6f, 62f),
+            new Vector3(-25f, 3.6f, 29f)
         };
 
         // Buscar os NPCs
