@@ -72,8 +72,8 @@ public class PlayerControllerWithVirtualCamera : MonoBehaviour
     #region DeviceInput
     private void InputFromDevices()
     {
-        //_inputs = moveAction.ReadValue<Vector2>();
         _inputs = _virtualJoystickInput.VectorOutput();
+        //_inputs = moveAction.ReadValue<Vector2>();
         _cameraMovement = 85f * Time.deltaTime * -_touchPanelInput.VectorOutput();
     }
 
@@ -81,9 +81,9 @@ public class PlayerControllerWithVirtualCamera : MonoBehaviour
     {
         return runAction.ReadValue<float>() != 0 ? true : false;
     }
-    #endregion
+#endregion
 
-    #region MovementSection
+#region MovementSection
     private void Movement()
     {
         _playerSpeed = IsPlayerRunning() ? _runSpeed : _standardSpeed;
@@ -111,7 +111,7 @@ public class PlayerControllerWithVirtualCamera : MonoBehaviour
         {
             _rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
-    }
+        }
 
     bool isPlayerOnGround()
     {
@@ -119,17 +119,17 @@ public class PlayerControllerWithVirtualCamera : MonoBehaviour
         return isOnGround.GetBoolGround();
     }
 
-    #endregion
+#endregion
 
-    #region AnimationSection
+#region AnimationSection
     private void Animations(float animSpeed, bool isRunning)
     {
         _animator.SetFloat(_animSpeedId, animSpeed);
         _animator.SetBool(_animRunId, isRunning);
     }
-    #endregion
+#endregion
 
-    #region CameraSection
+#region CameraSection
     private void CameraRotation()
     {
         _cinemachineTargetX += -_cameraMovement.x;
@@ -148,7 +148,7 @@ public class PlayerControllerWithVirtualCamera : MonoBehaviour
 
         return Mathf.Clamp(angle, angleMin, angleMax);
     }
-    #endregion
+#endregion
 }
 
 

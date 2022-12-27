@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IsOnGround : MonoBehaviour
@@ -10,31 +8,20 @@ public class IsOnGround : MonoBehaviour
     {
         return isOnGround;
     }
-    private void OnTriggerEnter(Collider other)
+
+    void Update()
     {
-        if (other.gameObject.CompareTag("Terrain"))
+        // Raycast down from the player's feet to check for the ground
+        RaycastHit hit;
+        Vector3 startPoint = transform.position;
+        Vector3 endPoint = startPoint - Vector3.up * 0.1f;
+        if (Physics.Raycast(startPoint, endPoint, out hit))
         {
             isOnGround = true;
         }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Terrain"))
+        else
         {
             isOnGround = false;
         }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Terrain"))
-        {
-            isOnGround = true;
-        }
-    }
-
-    public void onClick()
-    {
-        Debug.Log("Apertou!!!");
     }
 }
